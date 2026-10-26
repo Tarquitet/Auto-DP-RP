@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.venv/
+
+# Carpetas de trabajo y salida de Minecraft
+pendientes/
+output/
+staging/
+
+# Paquetes pesados sueltos por accidente
+*.zip
+*.mcaddon
+*.mcpack
+*.ogg
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

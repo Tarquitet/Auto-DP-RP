@@ -1,0 +1,38 @@
+{
+  "NAMESPACE": "btc",
+  "INPUT_FOLDER": "pendientes",
+  "OUTPUT_FOLDER": "output",
+  "RP_FOLDER_NAME": "BTC Assets",
+  "DP_FOLDER_NAME": "BTC DP",
+  "ACTIVE_VERSION": "26.3",
+  "INPUT_SUBFOLDERS": [
+    "equipment",
+    "items",
+    "waypoints",
+    "paintings",
+    "music",
+    "importar_zips",
+    "bedrock_addons",
+    "bedrock_staging"
+  ],
+  "MINECRAFT_VERSIONS": {
+    "1.13": { "resource_pack_format": 4, "data_pack_format": 4 },
+    "1.15": { "resource_pack_format": 5, "data_pack_format": 5 },
+    "1.16.2": { "resource_pack_format": 6, "data_pack_format": 6 },
+    "1.17": { "resource_pack_format": 7, "data_pack_format": 7 },
+    "1.18": { "resource_pack_format": 8, "data_pack_format": 8 },
+    "1.19": { "resource_pack_format": 9, "data_pack_format": 10 },
+    "1.19.3": { "resource_pack_format": 12, "data_pack_format": 10 },
+    "1.19.4": { "resource_pack_format": 13, "data_pack_format": 12 },
+    "1.20": { "resource_pack_format": 15, "data_pack_format": 15 },
+    "1.20.2": { "resource_pack_format": 18, "data_pack_format": 18 },
+    "1.20.4": { "resource_pack_format": 22, "data_pack_format": 26 },
+    "1.20.6": { "resource_pack_format": 32, "data_pack_format": 41 },
+    "1.21": { "resource_pack_format": 34, "data_pack_format": 48 },
+    "1.21.2": { "resource_pack_format": 42, "data_pack_format": 57 },
+    "1.21.4": { "resource_pack_format": 46, "data_pack_format": 61 },
+    "1.21.9": { "resource_pack_format": [69, 0], "data_pack_format": [88, 0] },
+    "26.1": { "resource_pack_format": [84, 0], "data_pack_format": [101, 1] },
+    "26.3": { "resource_pack_format": [97, 1], "data_pack_format": [121, 0] }
+  }
+}
