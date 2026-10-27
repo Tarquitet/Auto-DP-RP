@@ -69,7 +69,6 @@ def process(input_path: Path, rp_path: Path, dp_path: Path, namespace: str):
         return
 
     print("Converting staged Bedrock models to Java...")
-    commands = [f"# Comandos generados para modelos Bedrock en {namespace}", ""]
 
     for geo_file in geo_files:
         name = geo_file.name.replace(".geo.json", "")
@@ -100,7 +99,6 @@ def process(input_path: Path, rp_path: Path, dp_path: Path, namespace: str):
                     size = cube.get("size", [1, 1, 1])
                     inflate = cube.get("inflate", 0.0)
 
-                    # Conversión espacial: En Bedrock X está invertido respecto a Java y el centro X/Z es 0 (en Java es +8)
                     fx = round(-(origin[0] + size[0]) + 8 - inflate, 4)
                     fy = round(origin[1] - inflate, 4)
                     fz = round(origin[2] + 8 - inflate, 4)
@@ -121,11 +119,9 @@ def process(input_path: Path, rp_path: Path, dp_path: Path, namespace: str):
                         "faces": faces,
                     }
 
-                    # Rotación (prioriza rotación del cubo, si no usa la del bone)
                     rot = cube.get("rotation", bone_rot)
                     piv = cube.get("pivot", bone_piv)
                     if any(r != 0 for r in rot):
-                        # Tomar el eje dominante para cumplir con el estándar de modelos de ítems en Java
                         ejes = [("x", -rot[0]), ("y", -rot[1]), ("z", rot[2])]
                         eje_dom, val_dom = max(ejes, key=lambda item: abs(item[1]))
                         ang_java, usar = _ajustar_angulo_java(val_dom)
@@ -173,19 +169,7 @@ def process(input_path: Path, rp_path: Path, dp_path: Path, namespace: str):
                 {"model": {"type": "minecraft:model", "model": f"{namespace}:item/{name}"}},
             )
 
-            # 4. Comando /give en Data Pack (equipable en cabeza por defecto usando carved_pumpkin o stick)
-            nombre_limpio = name.replace("_", " ").title()
-            commands.extend([
-                f"# Modelo Bedrock 3D: {nombre_limpio}",
-                f"give @p stick[minecraft:item_model=\"{namespace}:{name}\",minecraft:equippable={{slot:\"head\"}},minecraft:item_name='{{\"text\":\"{nombre_limpio}\",\"italic\":false}}'] 1",
-                "",
-            ])
             print(f"  Convertido a Java: {name} ({len(elements)} cubos)")
 
         except Exception as e:
             print(f"  [Error] Convirtiendo {geo_file.name}: {e}")
-
-    if len(commands) > 2:
-        cmd_file = dp_path / "data" / namespace / "function" / "get_bedrock_items.mcfunction"
-        cmd_file.parent.mkdir(parents=True, exist_ok=True)
-        cmd_file.write_text("\n".join(commands), encoding="utf-8")

@@ -1,8 +1,49 @@
+import sys
+import subprocess
+import importlib
+from pathlib import Path
+
+# ==========================================================
+# AUTO-INSTALADOR DE DEPENDENCIAS
+# ==========================================================
+def asegurar_dependencias():
+    requeridas = ["PIL", "mutagen"]
+    faltantes = []
+    
+    for pkg in requeridas:
+        try:
+            importlib.import_module(pkg)
+        except ImportError:
+            faltantes.append(pkg)
+    
+    if faltantes:
+        print(f"⚠️ Faltan dependencias de Python: {', '.join(faltantes)}")
+        print("🔄 Instalando automáticamente desde requirements.txt...\n")
+        
+        # Buscar requirements.txt en la carpeta raíz (padre de generator/)
+        req_file = Path(__file__).parent.parent / "requirements.txt"
+        
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", str(req_file)])
+            print("\n✅ Dependencias instaladas correctamente. Reiniciando el generador...\n")
+            
+            # Reiniciar el script para que los nuevos imports funcionen sin errores
+            import os
+            os.execv(sys.executable, [sys.executable] + sys.argv)
+            
+        except subprocess.CalledProcessError as e:
+            print(f"\n❌ Error al instalar automáticamente.")
+            print(f"Ejecuta manualmente en la terminal: python -m pip install -r requirements.txt")
+            sys.exit(1)
+
+# Ejecutar la verificación ANTES de cualquier otro import
+asegurar_dependencias()
+# ==========================================================
+
 import argparse
 import pkgutil
 import inspect
 import json
-from pathlib import Path
 
 try:
     from generator import config
@@ -12,7 +53,6 @@ except ModuleNotFoundError:
     import config
     import modules
     from utils import clean_and_create, write_json, inicializar_carpetas
-
 
 def crear_mcmeta(fmt, description: str) -> dict:
     if isinstance(fmt, list):
@@ -24,7 +64,6 @@ def crear_mcmeta(fmt, description: str) -> dict:
             }
         }
     return {"pack": {"pack_format": fmt, "description": description}}
-
 
 def main():
     parser = argparse.ArgumentParser(description="Generate Minecraft Java packs.")
@@ -87,9 +126,8 @@ def main():
             elif params_count >= 4:
                 module.process(input_path, java_rp, java_dp, config.NAMESPACE)
 
-    print("Java generation completed successfully.")
+    print("\n✅ Java generation completed successfully.")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
