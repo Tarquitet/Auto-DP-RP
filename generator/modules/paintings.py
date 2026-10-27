@@ -74,7 +74,7 @@ def process(input_path: Path, rp_path: Path, dp_path: Path, namespace: str):
             pinturas_survival.append(f"{namespace}:{name}")
             
         # 6. Generar comando de obtención
-        nombre_limpio = name.replace('_', ' ').title()
+        nombre_limpio = name.replace('-', ' ').title()
         commands.extend([
             f"# Cuadro: {nombre_limpio} por {author}",
             f"give @p painting[minecraft:painting_variant=\"{namespace}:{name}\",minecraft:item_model=\"{namespace}:item/{name}\",minecraft:custom_name='{{\"text\":\"{nombre_limpio} - {author}\", \"italic\":false}}'] 1",
